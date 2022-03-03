@@ -13,7 +13,9 @@ func ConnectDatabase() {
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
+
 	database.AutoMigrate(&Book{})
+	database.AutoMigrate(&PDF{})
 
 	DB = database
 }

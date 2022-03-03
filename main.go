@@ -22,6 +22,12 @@ func main() {
 	router.PATCH("/books/:id/", controllers.UpdateBook)
 	router.DELETE("/books/:id/", controllers.DeleteBook)
 
+	router.GET("/pdfs/", controllers.PDFList)
+	router.GET("/pdfs/:id/", controllers.PDFDetail)
+	router.POST("/pdfs/", controllers.CreatePDF)
+	router.PATCH("/pdfs/:id/", controllers.UpdatePDF)
+	router.DELETE("/pdfs/:id/", controllers.DeletePDF)
+
 	// start serving the application
 	err := router.Run()
 	if err != nil {
