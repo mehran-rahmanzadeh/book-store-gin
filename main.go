@@ -35,6 +35,9 @@ func main() {
 	secureRouter.PATCH("/pdfs/:id/", controllers.UpdatePDF)
 	secureRouter.DELETE("/pdfs/:id/", controllers.DeletePDF)
 
+	// profile
+	secureRouter.GET("/profile/", controllers.Profile)
+
 	// authentication
 	var loginService utils.LoginService = utils.StaticLoginService()
 	var jwtService utils.JWTService = utils.JWTAuthService()
