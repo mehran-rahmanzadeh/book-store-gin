@@ -1,5 +1,7 @@
 package utils
 
+import "gin-tutorial/models"
+
 type LoginService interface {
 	LoginUser(email string, password string) bool
 }
@@ -16,5 +18,8 @@ func StaticLoginService() LoginService {
 	}
 }
 func (info *loginInformation) LoginUser(email string, password string) bool {
-	return info.email == email && info.password == password
+	count := int64(0)
+	models.DB.Model(&models.User{}).Where(
+		"email = ? AND password = ?", email, password).Count(&count)
+	return count > 0
 }

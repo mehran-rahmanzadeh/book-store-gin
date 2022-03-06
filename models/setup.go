@@ -23,6 +23,10 @@ func ConnectDatabase() {
 	if migratePDFErr != nil {
 		panic(migratePDFErr)
 	}
+	migrateUserErr := database.AutoMigrate(&User{})
+	if migrateUserErr != nil {
+		panic(migrateUserErr)
+	}
 
 	DB = database
 }

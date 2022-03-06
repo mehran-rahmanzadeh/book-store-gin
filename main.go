@@ -50,6 +50,7 @@ func main() {
 			ctx.JSON(http.StatusUnauthorized, nil)
 		}
 	})
+	router.POST("/register/", controllers.Register)
 
 	// start serving the application
 	err := router.Run()
