@@ -37,6 +37,7 @@ func main() {
 
 	// profile
 	secureRouter.GET("/profile/", controllers.Profile)
+	secureRouter.PATCH("/profile/edit/", controllers.EditProfile)
 
 	// authentication
 	var loginService utils.LoginService = utils.StaticLoginService()
