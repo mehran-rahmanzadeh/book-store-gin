@@ -2,8 +2,11 @@ package main
 
 import (
 	"gin-tutorial/controllers"
+	"gin-tutorial/middlewares"
 	"gin-tutorial/models"
+	"gin-tutorial/utils"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 var router *gin.Engine
@@ -15,18 +18,38 @@ func main() {
 	// connect to db
 	models.ConnectDatabase()
 
-	// routes
-	router.GET("/books/", controllers.BooksList)
-	router.GET("/books/:id/", controllers.BookDetail)
-	router.POST("/books/", controllers.CreateBook)
-	router.PATCH("/books/:id/", controllers.UpdateBook)
-	router.DELETE("/books/:id/", controllers.DeleteBook)
+	// JWT middleware
+	secureRouter := router.Group("")
+	secureRouter.Use(middlewares.AuthorizeJWT())
 
-	router.GET("/pdfs/", controllers.PDFList)
-	router.GET("/pdfs/:id/", controllers.PDFDetail)
-	router.POST("/pdfs/", controllers.CreatePDF)
-	router.PATCH("/pdfs/:id/", controllers.UpdatePDF)
-	router.DELETE("/pdfs/:id/", controllers.DeletePDF)
+	// routes
+	secureRouter.GET("/books/", controllers.BooksList)
+	secureRouter.GET("/books/:id/", controllers.BookDetail)
+	secureRouter.POST("/books/", controllers.CreateBook)
+	secureRouter.PATCH("/books/:id/", controllers.UpdateBook)
+	secureRouter.DELETE("/books/:id/", controllers.DeleteBook)
+
+	secureRouter.GET("/pdfs/", controllers.PDFList)
+	secureRouter.GET("/pdfs/:id/", controllers.PDFDetail)
+	secureRouter.POST("/pdfs/", controllers.CreatePDF)
+	secureRouter.PATCH("/pdfs/:id/", controllers.UpdatePDF)
+	secureRouter.DELETE("/pdfs/:id/", controllers.DeletePDF)
+
+	// authentication
+	var loginService utils.LoginService = utils.StaticLoginService()
+	var jwtService utils.JWTService = utils.JWTAuthService()
+	var loginController controllers.LoginController = controllers.LoginHandler(loginService, jwtService)
+
+	router.POST("/login/", func(ctx *gin.Context) {
+		token := loginController.Login(ctx)
+		if token != "" {
+			ctx.JSON(http.StatusOK, gin.H{
+				"token": token,
+			})
+		} else {
+			ctx.JSON(http.StatusUnauthorized, nil)
+		}
+	})
 
 	// start serving the application
 	err := router.Run()
