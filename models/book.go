@@ -6,8 +6,8 @@ import "gorm.io/gorm"
 // @Description Book information
 type Book struct {
 	gorm.Model
-	Title  string `json:"title" filter:"searchable;filterable"`
-	Author string `json:"author" filter:"searchable;filterable"`
+	Title  string `json:"title"`
+	Author string `json:"author"`
 }
 
 type CreateBookInput struct {
@@ -22,10 +22,9 @@ type UpdateBookInput struct {
 
 type PDF struct {
 	gorm.Model
-	ID          uint   `json:"id" gorm:"primary_key"`
-	Title       string `json:"title" filter:"searchable;filterable"`
-	Description string `json:"description" filter:"searchable"`
-	Size        uint   `json:"size" filter:"filterable"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Size        uint   `json:"size"`
 }
 
 type CreatePDFInput struct {

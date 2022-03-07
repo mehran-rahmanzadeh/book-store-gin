@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"gin-tutorial/models"
-	filter "github.com/ActiveChooN/gin-gorm-filter"
+	"gin-tutorial/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,14 @@ import (
 // @Router       /books/ [get]
 func BooksList(c *gin.Context) {
 	var books []models.Book
-	models.DB.Scopes(filter.FilterByQuery(c, filter.ALL)).Find(&books)
+	allowedFilters := []string{"author", "title"}
+	filterMap := map[string]string{}
+	for k, v := range c.Request.URL.Query() {
+		if utils.CheckItemInSlice(allowedFilters, k) {
+			filterMap[k] = v[0]
+		}
+	}
+	models.DB.Where(filterMap).Find(&books)
 
 	c.JSON(http.StatusOK, gin.H{"data": books})
 }
@@ -136,7 +143,14 @@ func DeleteBook(c *gin.Context) {
 // @Router       /pdfs/ [get]
 func PDFList(c *gin.Context) {
 	var pdfs []models.PDF
-	models.DB.Find(&pdfs)
+	allowedFilters := []string{"size", "title"}
+	filterMap := map[string]string{}
+	for k, v := range c.Request.URL.Query() {
+		if utils.CheckItemInSlice(allowedFilters, k) {
+			filterMap[k] = v[0]
+		}
+	}
+	models.DB.Where(filterMap).Find(&pdfs)
 
 	c.JSON(http.StatusOK, gin.H{"data": pdfs})
 }
