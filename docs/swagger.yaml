@@ -1,0 +1,459 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Book:
+    description: Book information
+    properties:
+      author:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.CreateBookInput:
+    properties:
+      author:
+        type: string
+      title:
+        type: string
+    required:
+    - author
+    - title
+    type: object
+  models.CreatePDFInput:
+    properties:
+      description:
+        type: string
+      size:
+        type: integer
+      title:
+        type: string
+    required:
+    - description
+    - size
+    - title
+    type: object
+  models.PDF:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      size:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.UpdateBookInput:
+    properties:
+      author:
+        type: string
+      title:
+        type: string
+    type: object
+  models.UpdatePDFInput:
+    properties:
+      description:
+        type: string
+      size:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+      password:
+        type: string
+    type: object
+  models.UserEditInput:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+    type: object
+  models.UserRegisterInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  utils.ErrorMessage:
+    properties:
+      field:
+        type: string
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server books server. You can visit the GitHub repository
+    at https://github.com/mehran-rahmanzadeh/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Go + Gin Books API
+  version: "1.0"
+paths:
+  /books/:
+    get:
+      consumes:
+      - application/json
+      description: get books list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Show Books List
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: create new book
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateBookInput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Book
+      tags:
+      - books
+  /books/:id/:
+    delete:
+      consumes:
+      - application/json
+      description: delete book
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Remove Book
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      description: get book detail
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Show Book Detail
+      tags:
+      - books
+    patch:
+      consumes:
+      - application/json
+      description: edit book
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateBookInput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Book Data
+      tags:
+      - books
+  /pdfs/:
+    get:
+      consumes:
+      - application/json
+      description: get pdfs list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PDF'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Show PDFs List
+      tags:
+      - pdfs
+    post:
+      consumes:
+      - application/json
+      description: create new pdf
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreatePDFInput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Create PDF
+      tags:
+      - pdfs
+  /pdfs/:id/:
+    delete:
+      consumes:
+      - application/json
+      description: remove pdf
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete PDF
+      tags:
+      - pdfs
+    get:
+      consumes:
+      - application/json
+      description: get pdf detail
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PDF'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Show PDF Detail
+      tags:
+      - pdfs
+    patch:
+      consumes:
+      - application/json
+      description: edit pdf
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdatePDFInput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Update PDF Data
+      tags:
+      - pdfs
+  /profile/:
+    get:
+      consumes:
+      - application/json
+      description: get user's profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Show user's profile
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: edit user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserEditInput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Edit user's profile
+      tags:
+      - user
+  /register/:
+    post:
+      consumes:
+      - application/json
+      description: signup user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserRegisterInput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorMessage'
+      summary: Register new user
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

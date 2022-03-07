@@ -9,6 +9,16 @@ import (
 	"net/http"
 )
 
+// Register godoc
+// @Summary      Register new user
+// @Description  signup user
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.UserRegisterInput
+// @Failure      400  {object}	utils.ErrorMessage
+// @Failure      500  {object}	utils.ErrorMessage
+// @Router       /register/ [post]
 func Register(c *gin.Context) {
 	var input models.UserRegisterInput
 	if err := c.ShouldBindJSON(&input); err != nil {
