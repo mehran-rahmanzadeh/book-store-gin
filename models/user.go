@@ -9,11 +9,11 @@ type User struct {
 }
 
 type UserRegisterInput struct {
-	Email    string `json:"email" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
 }
 
 type UserEditInput struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	FirstName string `json:"firstName,alpha"`
+	LastName  string `json:"lastName,alpha"`
 }
